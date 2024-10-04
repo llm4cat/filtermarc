@@ -27,7 +27,16 @@ classifiers = [
 ]
 dynamic = ["version"]
 requires-python = ">=3.9"
-dependencies = []
+dependencies = [
+    'pymarc >= 5.0.0',
+    # For Python <3.11 we need typing_extensions for Self, which was
+    # added to the stdlib in 3.11.
+    'typing_extensions >= 4.0.0; python_version < "3.11"',
+    'orjson >= 2.2.0; python_version == "3.9"',
+    'orjson >= 3.4.7; python_version == "3.10"',
+    'orjson >= 3.7.7; python_version == "3.11"',
+    'orjson >= 3.8.4; python_version == "3.12"',
+]
 
 [project.urls]
 Homepage = "https://github.com/jthomale/filtermarc"

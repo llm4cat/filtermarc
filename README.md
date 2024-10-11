@@ -10,9 +10,10 @@ filtermarc
 
 ## About
 
-*`filtermarc`* is a Python package for filtering and selecting large sets of
-[MARC][about-marc] records based on what they contain. This is useful for
-creating custom data sets.
+*`filtermarc`* is a Python package for filtering, selecting, and then
+formatting large sets of [MARC][about-marc] records based on data content. This
+is useful for efficiently creating custom data sets from very large sets of
+MARC records, such as the ones from the Library of Congress.
 
 [Top](#top)
 
@@ -39,14 +40,14 @@ TODO
 If you have write access to the repository, clone the project directly.
 
 ```bash
-git clone https://github.com/jthomale/filtermarc.git
+git clone https://github.com/llm4cat/filtermarc.git
 ```
 
 Or, if you do not have write access to the repository, fork the project first
 and then clone your fork.
 
 ```bash
-git clone https://github.com/[your-github-account]/filtermarc.git
+git clone https://github.com/your-github-account/filtermarc.git
 ```
 
 Create and activate a new virtual environment for development using whatever
@@ -64,8 +65,8 @@ python -m pip install -e .[dev]
 ```
 
 All dependency and build information is defined in `pyproject.toml` and follows
-[PEP 621][pep-621]. Specifying `[dev]` to `pip` ensures it includes the
-optional development dependencies, namely `pytest`.
+[PEP 621][pep-621]. Specifying `[dev]` ensures it includes the optional
+development dependencies, namely `pytest`.
 
 ### Running Tests
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "filtermarc"
-description = "Python package for filtering and selecting large sets of MAchine Readable Cataloging (MARC) records based on what they contain."
+description = "Python package for filtering, selecting, and then formatting large sets of MAchine Readable Cataloging (MARC) records based on what they contain."
 readme = "README.md"
 authors = [{ name = "Jason Thomale", email = "jason.thomale@unt.edu"}]
 keywords = ["data", "records", "MARC"]
@@ -39,9 +39,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/jthomale/filtermarc"
-Repository = "https://github.com/jthomale/filtermarc"
-Changelog = "https://github.com/jthomale/filtermarc/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/llm4cat/filtermarc"
+Repository = "https://github.com/llm4cat/filtermarc"
+Changelog = "https://github.com/llm4cat/filtermarc/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
@@ -92,7 +92,7 @@ basepython=python3.11
 deps =
     pylint
 commands =
-    pylint filtermarc tests --ignore=__pycache__ --good-names=_,i,mn,mx,em
+    pylint filtermarc tests --ignore=__pycache__ --good-names=_,i
 
 [testenv:mypy_strict]
 basepython=python3.11

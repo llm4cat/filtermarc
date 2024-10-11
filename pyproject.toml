@@ -52,6 +52,9 @@ dev = [
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
 
+[tool.pylint]
+extension-pkg-whitelist = ["orjson"]
+
 [tool.tox]
 legacy_tox_ini = """
 [tox]

@@ -1,9 +1,8 @@
 """Configuration and shared fixtures etc. for tests."""
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Optional, Tuple, Union
+from typing import Tuple, Union
 
-import orjson
 import pytest
 
 from filtermarc.localtypes import PathLike
@@ -30,7 +29,6 @@ def make_marc_records():
         return Field(tag, data=''.join(fdata).replace('#', ' '))
 
     def _make_varfield(tag: str, raw: str) -> Field:
-        fdata = []
         ind, sfdata = list(raw[0:2].replace('#', ' ')), raw[2:].split('$')[1:]
         return Field(tag, indicators=ind, subfields=[
             Subfield(code=sf[0], value=sf[1:]) for sf in sfdata
@@ -38,8 +36,6 @@ def make_marc_records():
 
     def _make_marc_records(num: int, fdata: FieldData = {}) -> list[Record]:
         records = []
-        req_tags = {'001', '008', '100', '245'}
-        tags = sorted(list(req_tags | set(fdata.keys())))
         for i in range(num):
             record_data = {
                 '001': [str(i)],

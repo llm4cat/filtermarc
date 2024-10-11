@@ -69,14 +69,14 @@ class Json(RecordFormat):
 
     def __init__(self, pretty_print: bool = False):
         """Inits a MarcInJson RecordFormat instance.
-        
+
         Args:
             pretty_print: If True, output is pretty printed using
                 orjson.option.OPT_INDENT_2.
         """
         self.pretty_print = pretty_print
         self.option = orjson.OPT_INDENT_2 if pretty_print else None
-    
+
     @property
     def multi_prefix(self) -> bytes:
         """The prefix to output for multi-record files."""

@@ -20,7 +20,7 @@ def simulate_one_rec():
         filename = f'test{fmt.file_extension}'
         output = [fmt.header, fmt(record), fmt.footer]
         return filename, fmt.mode, b''.join(output)
-    
+
     return _sim
 
 
@@ -35,7 +35,7 @@ def simulate_multi_rec():
             fmt.footer
         ]
         return filename, fmt.mode, b''.join(output)
-    
+
     return _sim
 
 

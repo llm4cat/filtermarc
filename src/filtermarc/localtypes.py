@@ -7,9 +7,9 @@ from typing import Callable, Protocol, Union
 from pymarc import Field
 
 if sys.version_info >= (3, 11):
-    from typing import Self
+    from typing import Self  # noqa:F401
 else:
-    from typing_extensions import Self
+    from typing_extensions import Self  # noqa:F401
 
 
 # Misc type vars defined here.

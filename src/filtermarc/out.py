@@ -3,7 +3,7 @@ from collections.abc import Generator, Sequence
 from contextlib import contextmanager, ExitStack, nullcontext
 from pathlib import Path
 import sys
-from typing import Any, IO, Iterable, Optional, TextIO, Type 
+from typing import Any, IO, Iterable, Optional, Type
 from types import TracebackType
 
 from filtermarc.filters import RecordFilterPipeline
@@ -99,7 +99,7 @@ class RecordFileWriter:
 
     def path_to_nth_file(self, nth: int) -> Path:
         """A Path (absolute) to the nth file.
-        
+
         Args:
             nth: An integer for the number of file you want to create a
                 Path for.
@@ -238,7 +238,7 @@ class Job:
         log_path: Optional[PathLike] = None,
         log_every: Optional[int] = 10000,
         max_per_file: int = 0,
-        default_record_format: RecordFormat  = Marc(),
+        default_record_format: RecordFormat = Marc(),
         default_output_limit: int = 100000
     ) -> None:
         """Inits a new Job object.
@@ -264,13 +264,13 @@ class Job:
         self.max_per_file = 0 if max_per_file < 0 else max_per_file
         self.default_record_format = default_record_format
         self.default_output_limit = default_output_limit
-    
+
     @contextmanager
     def open_log(self) -> Generator[IO]:
         """Opens a log file for writing.
-        
+
         This is a context manager. Use:
-            
+
             with myjob.open_log() as log_fh:
                 ...
         """

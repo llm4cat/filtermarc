@@ -16,7 +16,7 @@ from filtermarc.marc import RecordCache
 @pytest.fixture
 def match_001() -> RecordFilter:
     """Fixture: returns a function for making dummy RecordFilters.
-    
+
     Note that the filters that this makes are also Mock objects so that
     calls made to them etc. can be tracked and tested.
     """

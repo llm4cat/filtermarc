@@ -20,7 +20,7 @@ class RecordFilterPipeline:
             pymarc Fields) and return a boolean indicating whether a
             given record matches that filter or not.
     """
-    
+
     def __init__(self, *filters: RecordFilter) -> None:
         """Inits a RecordFilterPipeline instance.
 
@@ -77,7 +77,7 @@ class RecordFilterPipeline:
 
         def _union_filter(fields: RecordCacheLike) -> bool:
             return self.check_record(fields) or other.check_record(fields)
-        
+
         return type(self)(_union_filter)
 
     def check_record(self, record: Union[Record, RecordCacheLike]) -> bool:
@@ -153,6 +153,7 @@ def by_character_position(
     """
     subfields = list(subfields) if subfields else []
     tags = parse_fieldspec(marc_tags)
+
     def _filter(fields: RecordCacheLike) -> bool:
         for tag in tags:
             for field in fields.cache.get(tag, []):
@@ -185,6 +186,7 @@ def by_field_exists(marc_tags: FieldSpec) -> RecordFilter:
             str -- one tag or a comma-separated list -- or a sequence.
     """
     tags = parse_fieldspec(marc_tags)
+
     def _filter(fields: RecordCacheLike) -> bool:
         for tag in tags:
             for field in fields.cache.get(tag, []):

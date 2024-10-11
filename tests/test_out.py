@@ -270,9 +270,9 @@ def test_recordfilewriter_as_context_manager(make_marc_records, dummy_format,
             '<END>'
         ]).encode('utf8')
 
-    assert not (tmp_path / Path(f'testfile-0006.dum')).exists()
+    assert not (tmp_path / Path('testfile-0006.dum')).exists()
     assert rfw.active_fh is None
-        
+
 
 def test_output_init_default_state():
     pl = RecordFilterPipeline()
@@ -366,7 +366,7 @@ def test_job_run_limits(def_limit, limits, exp_limits, make_marc_records,
         with patch.multiple(job, **job_patches):
             job.rfwriter_cls = dummy_rfwriter_cls
             batches = job.run((rec for rec in records))
-    
+
     # Make sure the expected records were matched and written, for each
     # output -- depending on the expected limit.
     matched_slices = [
@@ -421,6 +421,7 @@ def test_job_run_batch_params(use_default_fmt, make_marc_records,
         assert batch.record_format == dummy_format
         assert batch.max_per_file == 5
 
+
 @pytest.mark.parametrize(
     'limits, log_every, exp_log_limit, exp_log_summary, exp_logst_args', [
         ([0, 0], 0, False, False, []),
@@ -460,7 +461,7 @@ def test_job_run_logging(limits, log_every, exp_log_limit, exp_log_summary,
         job_patches = {'log': DEFAULT, 'log_state': DEFAULT}
         with patch.multiple(job, **job_patches) as job_mocks:
             job.rfwriter_cls = dummy_rfwriter_cls
-            batches = job.run((rec for rec in records))
+            job.run((rec for rec in records))
 
     # Log output should reflect the given parameters.
     exp_log_calls = []

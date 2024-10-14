@@ -4,7 +4,7 @@ import operator
 from typing import Optional, Union
 
 from filtermarc.localtypes import (
-    FieldSpec, RecordCacheLike, RecordFilter, Self, SubfieldSpec
+    ComparisonOp, FieldSpec, RecordCacheLike, RecordFilter, Self, SubfieldSpec
 )
 from filtermarc.marc import RecordCache, parse_fieldspec
 from pymarc import Record
@@ -87,7 +87,7 @@ class RecordFilterPipeline:
             record: The record to attempt to match against. This may be
             a pymarc Record object OR a RecordCache.
         """
-        if hasattr(record, 'decode_marc'):
+        if isinstance(record, Record):
             record = RecordCache(record)
         for filtr in self.filters:
             if not filtr(record):
@@ -121,7 +121,7 @@ def by_character_position(
     marc_tags: FieldSpec,
     cp_range: Sequence[int],
     match_val: Union[str, int],
-    op: operator = operator.eq,
+    compare: ComparisonOp = operator.eq,
     subfields: Optional[SubfieldSpec] = None
 ) -> RecordFilter:
     """Creates a record filter for matching by character position.
@@ -165,11 +165,11 @@ def by_character_position(
                     vals = [subf.value for subf in field.subfields]
                 for val in vals:
                     cmp_val = type(match_val)(val[cp_range[0]:cp_range[1] + 1])
-                    if op == operator.contains:
+                    if compare == operator.contains:
                         args = (cmp_val, match_val)
                     else:
                         args = (match_val, cmp_val)
-                    if op(*args):
+                    if compare(*args):
                         return True
         return False
     return _filter

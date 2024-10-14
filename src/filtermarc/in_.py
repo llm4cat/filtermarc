@@ -27,5 +27,5 @@ def stream_records_from_files(
             binary_marc = next(MARCReader(fh, **kwargs), None)
             reader_cls = JSONReader if binary_marc is None else MARCReader
             fh.seek(0)
-            for record in reader_cls(fh, **kwargs):
+            for record in reader_cls(fh, **kwargs):  # type: ignore
                 yield record

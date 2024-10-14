@@ -3,12 +3,12 @@ from collections.abc import Generator, Sequence
 from contextlib import contextmanager, ExitStack, nullcontext
 from pathlib import Path
 import sys
-from typing import Any, IO, Iterable, Optional, Type
+from typing import Any, IO, Iterable, Optional, TextIO, Type
 from types import TracebackType
 
 from filtermarc.filters import RecordFilterPipeline
 from filtermarc.formats import RecordFormat, Marc
-from filtermarc.localtypes import PathLike
+from filtermarc.localtypes import PathLike, Self
 from filtermarc.marc import RecordCache
 from pymarc import Record
 
@@ -78,9 +78,9 @@ class RecordFileWriter:
         self.max_per_file = 0 if max_per_file < 1 else max_per_file
         self.active_file_count = 0
         self.active_record_count = 0
-        self.active_fh = None
+        self.active_fh: Optional[IO[Any]] = None
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         self.open_next()
         return self
 
@@ -89,7 +89,7 @@ class RecordFileWriter:
         exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType]
-    ):
+    ) -> None:
         self.close_active()
 
     @property
@@ -108,7 +108,7 @@ class RecordFileWriter:
         filesuffix = self.record_format.file_extension
         return Path(self.dirpath / filename).with_suffix(filesuffix)
 
-    def open_next(self) -> IO:
+    def open_next(self) -> IO[Any]:
         """Opens the next file in the sequence and returns the IO obj.
 
         If an active file is already open, this closes it an opens the
@@ -230,13 +230,19 @@ class Job:
             limit, this is used. A value <1 indicates no limit.
     """
     rfwriter_cls: Type[RecordFileWriter] = RecordFileWriter
+    _BatchInfoType = tuple[
+        dict[str, int],
+        dict[str, int],
+        dict[str, Output],
+        dict[str, RecordFileWriter]
+    ]
 
     def __init__(
         self,
         outputs: Sequence[Output],
         base_path: PathLike,
         log_path: Optional[PathLike] = None,
-        log_every: Optional[int] = 10000,
+        log_every: int = 10000,
         max_per_file: int = 0,
         default_record_format: RecordFormat = Marc(),
         default_output_limit: int = 100000
@@ -260,13 +266,13 @@ class Job:
         self.base_path = Path(base_path)
         self.log_path = log_path
         self.log_every = log_every
-        self.log_fh = None
+        self.log_fh: Optional[TextIO] = None
         self.max_per_file = 0 if max_per_file < 0 else max_per_file
         self.default_record_format = default_record_format
         self.default_output_limit = default_output_limit
 
     @contextmanager
-    def open_log(self) -> Generator[IO]:
+    def open_log(self) -> Generator[TextIO]:
         """Opens a log file for writing.
 
         This is a context manager. Use:
@@ -313,7 +319,7 @@ class Job:
                 f" (max {limits[output.name]})" if limits[output.name] else ''
             ]))
 
-    def _init_batches(self) -> tuple[Any]:
+    def _init_batches(self) -> _BatchInfoType:
         counts = {}
         limits = {}
         active = {}

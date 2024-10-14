@@ -1,7 +1,7 @@
 """Contains classes for formatting output records."""
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, Optional
 
 import orjson
 from pymarc import Record
@@ -27,12 +27,36 @@ class RecordFormat(ABC):
         multi_separator: The separator between multiple records.
     """
     file_extension = ''
-    mode = 'wb'
-    header = b''
-    footer = b''
-    multi_prefix = b''
-    multi_suffix = b''
-    multi_separator = b''
+
+    @property
+    def mode(self) -> str:
+        """The file mode for writing to a new file of this type."""
+        return 'wb'
+
+    @property
+    def header(self) -> bytes:
+        """Data to output before outputting any records."""
+        return b''
+
+    @property
+    def footer(self) -> bytes:
+        """Data to output after outputting records."""
+        return b''
+
+    @property
+    def multi_prefix(self) -> bytes:
+        """The prefix to output for multi-record files."""
+        return b''
+
+    @property
+    def multi_suffix(self) -> bytes:
+        """The suffix to output for multi-record files."""
+        return b''
+
+    @property
+    def multi_separator(self) -> bytes:
+        """The separator between multiple records."""
+        return b''
 
     @abstractmethod
     def __call__(self, record: Record) -> bytes:
@@ -43,7 +67,7 @@ class RecordFormat(ABC):
         Args:
             record: The pymarc Record object to convert.
         """
-        return None
+        return b''
 
 
 class Marc(RecordFormat):
@@ -74,8 +98,15 @@ class Json(RecordFormat):
             pretty_print: If True, output is pretty printed using
                 orjson.option.OPT_INDENT_2.
         """
+        self._option = None
         self.pretty_print = pretty_print
-        self.option = orjson.OPT_INDENT_2 if pretty_print else None
+
+    @property
+    def option(self) -> Optional[int]:
+        """The option int to pass to orjson."""
+        if self.pretty_print:
+            return orjson.OPT_INDENT_2
+        return None
 
     @property
     def multi_prefix(self) -> bytes:

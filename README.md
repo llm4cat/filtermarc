@@ -1,6 +1,8 @@
 filtermarc
 ==========
 
+[![Run linters and tests](https://github.com/llm4cat/filtermarc/actions/workflows/do-checks-and-tests.yml/badge.svg?branch=main)](https://github.com/llm4cat/filtermarc/actions/workflows/do-checks-and-tests.yml)
+
 * [About](#about)
 * [Installation](#installation)
 * [Usage](#usage)

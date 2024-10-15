@@ -1,0 +1,46 @@
+name: Run linters and tests
+on: [push, workflow_call, workflow_dispatch]
+jobs:
+
+  run-linters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Upgrade pip and install tox
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install tox
+      - name: Run linters
+        run: tox -e flake8,pylint_critical,mypy_strict
+
+  run-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: '3.9'
+            tox-env: '39'
+          - python: '3.10'
+            tox-env: '310'
+          - python: '3.11'
+            tox-env: '311'
+          - python: '3.12'
+            tox-env: '312'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Upgrade pip and install tox
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install tox
+      - name: Run tests
+        run: |
+          tox -e "py${{ matrix.tox-env }}-oldest"
+          tox -e "py${{ matrix.tox-env }}-latest"
